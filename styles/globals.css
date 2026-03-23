@@ -1,7 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "tailwindcss";
 
+:root {
+  --background: #2d2a2e;
+  --foreground: #fcfcfa;
+  --panel: #221f22;
+  --panel-2: #1e1b1e;
+  --border: #5b595c;
+  --muted: #c1c0c0;
+  --muted-2: #939293;
+  --green: #a9dc76;
+  --cyan: #78dce8;
+  --yellow: #ffd866;
+  --pink: #ff6188;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+textarea,
+button,
+input,
+select,
+pre,
+code {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(120, 220, 232, 0.3);
+}
+
+/* Dot loading animation */
 .loading {
   display: inline-flex;
   align-items: center;
@@ -21,6 +61,7 @@
   border-radius: 50%;
   display: inline-block;
   margin: 0 1px;
+  background: var(--yellow);
 }
 
 .loading span:nth-of-type(2) {
@@ -41,4 +82,23 @@
   100% {
     opacity: 0.2;
   }
+}
+
+/* Brain runner animation */
+@keyframes brainRun {
+  0% {
+    left: 3rem;
+    transform: translateY(-50%);
+  }
+
+  50% {
+    left: calc(100% - 4.5rem);
+    transform: translateY(-50%);
+  }
+
+  100% {
+    left: 3rem;
+    transform: translateY(-50%);
+  }
+}
 }
