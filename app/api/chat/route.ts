@@ -6,7 +6,8 @@ const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(config);
-
+const bulletCount = Number(body?.bulletCount ?? 5);
+const safeBulletCount = [3, 5, 8].includes(bulletCount) ? bulletCount : 5;
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
 
@@ -48,7 +49,8 @@ REPHRASED SENTENCE FOR RESUME:
 • Engineered a personalized appearance feature for the interface, leveraging TypeScript to dynamically adapt UI elements; improved user engagement and increased session durations by 25%.
 • Implemented a mobile-first design approach for the Linear style interface using TypeScript; optimized user interactions and achieved a 30% increase in mobile conversion rates.
 
-List only 3 such rewrites for the sentence "${sentence}" in bullet points that strictly starts with '•'.`,
+List only 3 such rewrites for the sentence "${sentence}" in bullet points that strictly starts with '◆   '.
+Return exactly ${safeBulletCount} resume bullets. Rank them from strongest to weakest.',
       },
     ],
   });
