@@ -7,6 +7,21 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 export default function Page() {
+  const [bulletCount, setBulletCount] = useState(5);
+  
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [linkedinBlurb, setLinkedinBlurb] = useState("");
+  const [resumeBullets, setResumeBullets] = useState("");
+  const [useJobTitle, setUseJobTitle] = useState(true);
+  const [useJobDescription, setUseJobDescription] = useState(true);
+  const [useLinkedinBlurb, setUseLinkedinBlurb] = useState(false);
+  const [useResumeBullets, setUseResumeBullets] = useState(true);
+  
+  const [wantBullets, setWantBullets] = useState(true);
+  const [wantLinkedin, setWantLinkedin] = useState(false);
+  
+  const [modelMode, setModelMode] = useState("auto");
   const bulletPointsRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToResults = () => {
@@ -16,6 +31,19 @@ export default function Page() {
   };
 
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
+    const payload: Record<string, unknown> = {
+  bulletCount,
+  modelMode,
+  outputs: {
+    bullets: wantBullets,
+    linkedin: wantLinkedin,
+  },
+};
+
+if (useJobTitle && jobTitle.trim()) payload.jobTitle = jobTitle.trim();
+if (useJobDescription && jobDescription.trim()) payload.jobDescription = jobDescription.trim();
+if (useLinkedinBlurb && linkedinBlurb.trim()) payload.linkedinBlurb = linkedinBlurb.trim();
+if (useResumeBullets && resumeBullets.trim()) payload.resumeBullets = resumeBullets.trim();
     useChat({
       api: '/api/chat',
       onResponse(res) {
@@ -26,6 +54,60 @@ export default function Page() {
       },
     });
 
+<div className="col-span-full">
+  <label htmlFor="bulletCount" className="block font-bold leading-6 text-gray-900">
+    Number of bullet options
+  </label>
+  <div className="mt-2">
+    <select
+      id="bulletCount"
+      value={bulletCount}
+      onChange={(e) => setBulletCount(Number(e.target.value))}
+      className="w-full rounded-md border px-3 py-2"
+    >
+      <option value={3}>3</option>
+      <option value={5}>5</option>
+      <option value={8}>8</option>
+    </select>
+  </div>
+</div>
+<div className="col-span-full space-y-3">
+  <label className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      checked={useJobTitle}
+      onChange={(e) => setUseJobTitle(e.target.checked)}
+    />
+    Use Job Title
+  </label>
+
+  <label className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      checked={useJobDescription}
+      onChange={(e) => setUseJobDescription(e.target.checked)}
+    />
+    Use Job Description
+  </label>
+
+  <label className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      checked={useLinkedinBlurb}
+      onChange={(e) => setUseLinkedinBlurb(e.target.checked)}
+    />
+    Use LinkedIn Blurb
+  </label>
+
+  <label className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      checked={useResumeBullets}
+      onChange={(e) => setUseResumeBullets(e.target.checked)}
+    />
+    Use Resume Bullets
+  </label>
+</div>
   const lastMessage = messages[messages.length - 1];
   const generatedPoints =
     lastMessage?.role === 'assistant' ? lastMessage.content : null;
